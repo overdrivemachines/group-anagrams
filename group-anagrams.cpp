@@ -6,20 +6,24 @@ using namespace std;
 
 vector<vector<string>> groupAnagrams(vector<string>& strs) {
   vector<vector<string>> result;
-  string s1, s2;
+  vector<string> sorted_strs;
 
-  for (unsigned long int i = 0; i < strs.size(); i++) {
+  // sorting each string of the vector. Inserting the sorted string into a new vector.
+  // ["eat","tea","tan","ate","nat","bat"] => ["aet", "aet", "ant", "aet", "ant", "abt" ]
+  for (string str: strs) {
+    sort(str.begin(), str.end());
+    sorted_strs.push_back(str);
+  }
+
+
+  for (unsigned long int i = 0; i < sorted_strs.size(); i++) {
     vector<string> group;
     group.push_back(strs[i]);
-    s1 = strs[i];
-    sort(s1.begin(), s1.end());
     for (unsigned long int j = i + 1; j < strs.size(); j++) {
-      s2 = strs[j];
-      sort(s2.begin(), s2.end());
-
-      if (s1 == s2) {
+      if (sorted_strs[i] == sorted_strs[j]) {
         group.push_back(strs[j]);
-        strs.erase(strs.begin() + (j));
+        strs.erase(strs.begin() + j);
+        sorted_strs.erase(sorted_strs.begin() + j);
         j--;
       }
     }
@@ -30,6 +34,8 @@ vector<vector<string>> groupAnagrams(vector<string>& strs) {
   return result;
 }
 
+// Print vector of vectors of string
+// e.g. [[eat, tea, ate], [tan, nat], [bat]]
 void printv(vector<vector<string>> groupstrs) {
   // vector<string> strs;
   string output = "[";
